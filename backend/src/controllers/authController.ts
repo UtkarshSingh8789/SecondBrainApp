@@ -66,7 +66,7 @@ export const login= async(req:Request,res:Response)=>{
         if(!process.env.SECRET_KEY){
             throw new Error("Vlaue not availbale")
         }
-        const token=jwt.sign({userID:User._id},process.env.SECRET_KEY.{
+        const token=jwt.sign({userID:User._id},process.env.SECRET_KEY,{
             expiresIn: '1h'
         })
         res.status(200).json({
