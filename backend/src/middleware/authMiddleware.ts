@@ -6,7 +6,7 @@ export interface AuthRequest extends Request{
 }
 export const isAuthenticated=async(req:AuthRequest,res:Response,next:NextFunction)=>{
     try {
-        const token=typeof req.headers.token === "string"?req.headers.token:undefined;
+        const token = typeof req.headers.token === "string" ? req.headers.token : undefined;
         console.log("token..",token)
         if(!token){
             res.status(400).json({
