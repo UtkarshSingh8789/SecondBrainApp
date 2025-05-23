@@ -73,7 +73,6 @@ const Card = (props: CardProps) => {
       setThumbnail(null);
     }
   }, [props.link]);
-  
   async function deleteHandle(){
     try{
       const token = localStorage.getItem("token");
