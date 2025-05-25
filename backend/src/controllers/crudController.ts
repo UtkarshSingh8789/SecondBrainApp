@@ -34,11 +34,11 @@ export const content =async(req:AuthRequest,res:Response)=>{
             return;
         }
         const userData=await userContent.find({userId:userid})
+        console.log(userData)
         res.status(200).json({
             message:"user data fetched successfully",
             data:userData,
         })
-        console.log(userData)
         return;
     } catch (err) {
         console.log("Err(catch): something went wrong",err)
@@ -71,7 +71,9 @@ export const shareContent=async(req:AuthRequest,res:Response)=>{
     try {
         const documents = await userContent.find({ userId });
         res.status(200).json({ data: documents });
+        return;
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
+        return;
     }
 }
