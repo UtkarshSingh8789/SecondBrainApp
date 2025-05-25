@@ -81,7 +81,7 @@ const Card = (props: CardProps) => {
         navigate("/"); 
         return;
       }
-      const res = await fetch(`http://localhost:8000/api/v1/delete/${props.title}`, {
+      const res = await fetch(`http://localhost:5000/api/v1/delete/${props.title}`, {
         method: "Delete",
         headers: {
           "token": token

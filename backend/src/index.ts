@@ -19,5 +19,5 @@ dbConnect();
 app.use("/api/v1",router);
 
 app.listen(process.env.PORT,()=>{
-  console.log("Server is runing")
+  console.log(`searver is renning at port ${process.env.PORT}`)
 })

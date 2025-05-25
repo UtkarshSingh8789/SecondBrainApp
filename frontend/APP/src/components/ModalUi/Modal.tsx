@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 const Modal = (props: {onClick: () => void,setModal: (value: boolean) => void, setReloadData: ()=> void}) => {
+
   const navigate = useNavigate();
+
   const modalRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const linkRef = useRef<HTMLInputElement>(null);
@@ -33,7 +36,7 @@ const Modal = (props: {onClick: () => void,setModal: (value: boolean) => void, s
         return;
       }
 
-      await fetch("http://localhost:8000/api/v1/addcontent", {
+      await fetch("http://localhost:5000/api/v1/addcontent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

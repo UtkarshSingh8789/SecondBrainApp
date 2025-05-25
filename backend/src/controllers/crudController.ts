@@ -16,7 +16,7 @@ export const newContent=async(req:AuthRequest,res:Response)=>{
             tag:tag,
             userId:userid
         })
-        await contentCreated.save()
+        await contentCreated.save();
         res.status(200).json({
             message: "Content saved Successfully"
         })
@@ -39,6 +39,7 @@ export const content =async(req:AuthRequest,res:Response)=>{
             data:userData,
         })
         console.log(userData)
+        return;
     } catch (err) {
         console.log("Err(catch): something went wrong",err)
         return;
@@ -57,7 +58,7 @@ export const deleteContent=async (req:AuthRequest,res:Response)=>{
             res.status(404).json({message:"content not found or unAuthorized"})
             return;
         }
-        await userContent.findByIdAndDelete(content._id)
+        await userContent.findByIdAndDelete(content)
         res.status(200).json({ message: "Content deleted successfully" });
         return;
     } catch (err) {
