@@ -1,7 +1,22 @@
-import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import user from "../models/userModel"
 import { Request,Response } from "express"
+import { AuthRequest } from "../middleware/authMiddleware"
+const generateAccessTokenAndRefreshToken= async(userId:string)=>{
+    try {
+        const User=await user.findById(userId)
+        if(!User){
+            throw new Error("User not found");
+        }
+        const accessToken=User.generateAccessToken()
+        const refreshToken=User.generateRefreshToken()
+        User.refreshToken=refreshToken
+        await User.save({validateBeforeSave:false})
+        return {accessToken,refreshToken}
+    } catch (error) {
+        throw new Error("Something went wrong")
+    }
+}
 export const registration= async(req:Request,res:Response)=>{
     try {
         const {username,email,password}=req.body;
@@ -63,17 +78,18 @@ export const login= async(req:Request,res:Response)=>{
             res.status(401).json({message:"invalid password"})
             return;
         }
-        if(!process.env.SECRET_KEY){
-            throw new Error("Vlaue not availbale")
+        const {accessToken,refreshToken}=await generateAccessTokenAndRefreshToken(User._id.toString())
+        const options={
+            httpOnly:true,
+            secure:true
         }
-        const token=jwt.sign({userID:User._id},process.env.SECRET_KEY,{
-            expiresIn: '1h'
-        })
-        console.log(token)
-        res.status(200).json({
-            message: "user logged in successfully",
-            token,
-            userID: User._id 
+        res.status(200)
+        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,options)
+        .json({
+            message:"user logged in successfully",
+            accessToken,
+            refreshToken
         })
         return;
     }catch(err){
@@ -83,4 +99,29 @@ export const login= async(req:Request,res:Response)=>{
         })
         return;
     }  
+}
+export const logout=async(req:AuthRequest,res:Response)=>{
+    try {
+        await user.findByIdAndUpdate(req.userID,{
+            $unset:{
+                refreshToken:""
+            }
+        })
+        const options={
+            httpOnly:true,
+            secure:true
+        }
+        res.status(200)
+        .clearCookie("accessToken",options)
+        .clearCookie("refreshToken",options)
+        .json(
+            {
+                message:"User logged out"
+            }
+        )
+        return;
+    } catch (error) {
+        console.error("Logout failed:", error);
+        res.status(500).json({ message: "Logout failed" })
+    }
 }
