@@ -6,7 +6,8 @@ export interface AuthRequest extends Request{
 }
 export const isAuthenticated=async(req:AuthRequest,res:Response,next:NextFunction)=>{
     try {
-        const token = typeof req.headers.token === "string" ? req.headers.token : undefined;
+        const token=req.cookies?.accessToken || req.header
+        ("Authorization")?.replace("Bearer ","")
         console.log("token..",token)
         if(!token){
             res.status(400).json({
@@ -14,13 +15,13 @@ export const isAuthenticated=async(req:AuthRequest,res:Response,next:NextFunctio
             })
             return;
         }
-        if(!process.env.SECRET_KEY){
+        if(!process.env.ACCESS_TOKEN_SECRET){
             res.status(500).json({
                 message:"server internal problem"
             })
             return;
         }
-        const decoded = jwt.verify(token, process.env.SECRET_KEY) as unknown as { userID: Types.ObjectId };
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET) as unknown as { userID: Types.ObjectId };
         req.userID=decoded.userID
         next();
     } catch (err) {
