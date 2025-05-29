@@ -3,7 +3,7 @@ import SideNavbar from "../components/SideNavbarUi/SideNavbar";
 import ShareIcon from "../components/icons/ShareIcon";
 import PlusIcon from "../components/icons/PlusIcon";
 import type { JSX } from "react";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect,useState } from "react";
 import Modal from "../components/ModalUi/Modal";
 import Card from "../components/CardUi/Card";
 import { useNavigate } from "react-router-dom";
@@ -19,11 +19,9 @@ const HomePage = ()=>{
   const [shareData, setShareData] = useState<any[]>([]);
   const [dataShow, setDataShow] = useState("All");
   let show: JSX.Element | JSX.Element[] = data1;
-
   useEffect(()=>{
     fetchingData();
   },[reloadData])
-
   async function fetchingData(){
     try{
       setLoading(true);
@@ -36,7 +34,7 @@ const HomePage = ()=>{
       const res = await fetch("http://localhost:5000/api/v1/content", {
         method: "GET",
         headers: {
-          "token": token
+          "Authorization": `Bearer ${token}`
         },
         credentials: "include"
       });
@@ -48,7 +46,6 @@ const HomePage = ()=>{
         setLoading(false);
       }
   }
-
   if(dataShow === "All"){
     show = loading ? (
       <div className="text-2xl font-semibold">Loading...</div>
@@ -95,7 +92,7 @@ const HomePage = ()=>{
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "token": token
+          "Authorization": `Bearer ${token}`
         },
         credentials: "include",
       });

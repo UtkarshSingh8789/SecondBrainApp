@@ -6,8 +6,9 @@ export interface AuthRequest extends Request{
 }
 export const isAuthenticated=async(req:AuthRequest,res:Response,next:NextFunction)=>{
     try {
-        const token=req.cookies?.accessToken || req.header
-        ("Authorization")?.replace("Bearer ","")
+        // const token=req.cookies?.accessToken || req.header
+        // ("Authorization")?.replace("Bearer ","")
+        const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
         console.log("token..",token)
         if(!token){
             res.status(400).json({

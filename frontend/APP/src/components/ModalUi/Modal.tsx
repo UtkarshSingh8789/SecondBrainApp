@@ -35,22 +35,20 @@ const Modal = (props: {onClick: () => void,setModal: (value: boolean) => void, s
         navigate("/"); 
         return;
       }
-
       await fetch("http://localhost:5000/api/v1/addcontent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "token": token
+          "Authorization": `Bearer ${token}`
         },
         credentials: "include",
         body: JSON.stringify(data)
       });
-
       props.setReloadData();
       alert("content added");
       }catch(err){
         console.log("Error while sending data");
-      }
+    }
   };
 
   return (

@@ -81,7 +81,7 @@ export const login= async(req:Request,res:Response)=>{
         const {accessToken,refreshToken}=await generateAccessTokenAndRefreshToken(User._id.toString())
         const options={
             httpOnly:true,
-            secure:true
+            secure:false
         }
         res.status(200)
         .cookie("accessToken",accessToken,options)
@@ -109,7 +109,7 @@ export const logout=async(req:AuthRequest,res:Response)=>{
         })
         const options={
             httpOnly:true,
-            secure:true
+            secure:false
         }
         res.status(200)
         .clearCookie("accessToken",options)

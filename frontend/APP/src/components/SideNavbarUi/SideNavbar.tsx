@@ -1,7 +1,5 @@
 import AppLogo from "../icons/AppLogo";
 import NavFields from "./NavFields";
-import ShareIcon from "../icons/ShareIcon";
-import TwitterIcon from "../icons/TwitterIcon";
 import YoutubeIcon from "../icons/YoutubeIcon";
 import DocumentIcon from "../icons/DocumentIcon";
 import All from "../icons/All";

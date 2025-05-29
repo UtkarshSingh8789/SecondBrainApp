@@ -82,9 +82,9 @@ const Card = (props: CardProps) => {
         return;
       }
       const res = await fetch(`http://localhost:5000/api/v1/delete/${props.title}`, {
-        method: "Delete",
+        method: "DELETE",
         headers: {
-          "token": token
+          "Authorization": `Bearer ${token}`
         },
         credentials: "include"
       });
